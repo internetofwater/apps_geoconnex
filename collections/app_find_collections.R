@@ -68,18 +68,33 @@ ui <- fluidPage(
         
         #select data to pull
         checkboxGroupInput("selectCollection", "Select the collections to find:",
-                           choices = c("River Basin (HUC6)" = "HU06",
-                                       "Sub-Basin (HUC8)" = "HU08", 
-                                       "Watershed (HUC10)" = "HU10",
-                                       "National Aquifers" = "nat_aq",
-                                       "Reference Gages" = "gages",
-                                       "Mainstem Rivers" = "mainstems",
-                                       "Native Lands" = "aiannh",
-                                       "Counties" = "counties",
-                                       "Core-based statistical areas" = "cbsa",
-                                       "Urban Areas" = "ua10",
-                                       "Places" = "places"
-                                       ),
+                           # choices = c("River Basin (HUC6) <a href='https://google.com'</a>" = "HU06",
+                           #             "Sub-Basin (HUC8)" = "HU08", 
+                           #             "Watershed (HUC10)" = "HU10",
+                           #             "National Aquifers" = "nat_aq",
+                           #             "Reference Gages" = "gages",
+                           #             "Mainstem Rivers" = "mainstems",
+                           #             "Native Lands" = "aiannh",
+                           #             "Counties" = "counties",
+                           #             "Core-based statistical areas" = "cbsa",
+                           #             "Urban Areas" = "ua10",
+                           #             "Places" = "places"
+                           #             ),
+                           choiceNames =
+                             list(HTML('River Basin (HUC6) <a href="https://www.usgs.gov/core-science-systems/ngp/national-hydrography/access-national-hydrography-products">data source</a>'), 
+                                  HTML('Sub-Basin (HUC8) <a href="https://www.usgs.gov/core-science-systems/ngp/national-hydrography/access-national-hydrography-products">data source</a>'),
+                                  HTML('Watershed (HUC10) <a href="https://www.usgs.gov/core-science-systems/ngp/national-hydrography/access-national-hydrography-products">data source</a>'), 
+                                  HTML('National Aquifers <a href="https://cida.usgs.gov/ngwmn/">data source</a>'),
+                                  HTML('Reference Gages <a href="https://github.com/dblodgett-usgs/ref_gages">data source</a>'),
+                                  HTML('Mainstem Rivers <a href="https://code.usgs.gov/wma/nhgf/mainstems">data source</a>'),
+                                  HTML('Native Lands <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html">data source</a>'),
+                                  HTML('Counties <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html">data source</a>'),
+                                  HTML('Core-based statistical areas <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html">data source</a>'),
+                                  HTML('Urban Areas <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html">data source</a>'),
+                                  HTML('Places <a href="https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html">data source</a>')
+                             ),
+                           choiceValues =
+                             list("HU06", "HU08", "HU10", "nat_aq","gages","mainstems","aianh","counties","cbsa","ua10","places"),
                            
                            selected = c("gages")#,
                            #inline=TRUE#,
