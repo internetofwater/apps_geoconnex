@@ -26,6 +26,15 @@ function getData() {
   //##########################################################################
   var bounds = map.getBounds();
     bound_box = Math.round(bounds._sw.lng*100)/100 + "," + Math.round(bounds._sw.lat*100)/100 + "," + Math.round(bounds._ne.lng*100/100) + "," + Math.round(bounds._ne.lat*100)/100
+    document.getElementById('current_zoom_text').innerHTML=""
+
+    if(currentZoom < zoomThreshold){
+      document.getElementById('current_zoom_text').innerHTML = "Current zoom: " + Math.round(currentZoom*10)/10 + ".<br><span style='color: rgb(252,67,57)'>Zoom in closer to find data or change zoom threshold.</span><br>Bounding Box: W " + Math.round(bounds._ne.lng*10)/10 + ", N " + Math.round(bounds._ne.lat*10)/10 + ", E " + Math.round(bounds._sw.lng*10)/10 + ", S " + Math.round(bounds._sw.lat*10)/10
+    }
+    if(currentZoom >= zoomThreshold){
+      document.getElementById('current_zoom_text').innerHTML = "Current zoom: " + Math.round(currentZoom) + ".<br>You are zoomed in enough to find data. Click the 'Find Data' button.<br>Bounding Box: W " + Math.round(bounds._ne.lng*10)/10 + ", N " + Math.round(bounds._ne.lat*10)/10 + ", E " + Math.round(bounds._sw.lng*10)/10 + ", S " + Math.round(bounds._sw.lat*10)/10
+    }
+
 
   var lasti = collectionsList.length - 1;
   for (i=0; i < collectionsList.length; i++) {
@@ -33,6 +42,7 @@ function getData() {
     console.log(dataLayer);
     downloadData(dataLayer, bound_box, i, lasti);
   }//end for loop
+  return bound_box;
 } //end function getData()
 //getData();    
 
