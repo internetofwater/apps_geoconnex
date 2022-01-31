@@ -1,0 +1,259 @@
+<!doctype html>
+<!-- (c) Copyright protected by Duke University -->
+<html class="no-js" lang="en-US" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Geoconnex Collections</title>
+    <meta name="description" content="California Stream Gages">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" href="favicon.png">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato&family=Quicksand:wght@400;600&display=swap" rel=  "stylesheet">
+     
+    <script  src="https://code.jquery.com/jquery-3.5.0.min.js"  integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+    crossorigin="anonymous"></script>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.0.0/mapbox-gl.css" rel="stylesheet" />
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+    <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+        type="text/css"/>
+
+    <!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+    
+    <script src="https://d3js.org/d3.v5.min.js"></script>           
+    <script type="text/javascript" src="https://cdn.plot.ly/plotly-latest.min.js" defer></script>
+    <link rel="stylesheet" href="css/main_content.css">
+
+    <style type="text/css">
+       #menu {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        padding: 5px;
+        background-color: rgba(255, 255, 255, 0.8);
+        font-size: 16px;
+      }
+
+      .mapboxgl-popup-content {
+        max-width: 400px;
+        padding: 10px;
+        font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
+      }
+
+    </style>
+</head>
+
+<body>
+<div class = "row header">
+    <div class="col-sm-9">    
+        <h1 style="padding-left: 1em;">Search for Data in Geoconnex</h1>    
+        <hr style="background-color: #02145C; height: 5px; margin-top: 1px;">
+    </div>
+    <div class="col-sm-3">
+        <a href = "https://internetofwater.org/"> <img src="img/iow_logo.png" style="width: 200px; height: 78px; padding-top: 10px; display: inline-block;"> </a> 
+    </div>
+</div>
+
+<!-- EXPLANATION TAB #################################################################################################
+
+####################################################################################################################-->
+<div class = "row header" style="margin-left: 20px;">
+  <p style="font-size: 16px;"> </p>
+</div>
+
+<div class="container">
+  <div class= "col-sm-12 map-layers-row">   
+    <h4 style="text-align: left; padding-left: 25%; color: rgb(26,131,130);">
+      (1) Select zoom level and zoom in. <br>
+      (2) Click on "Find Data" button. <br>
+      (3) Explore reference collections in Geoconnex. <br>
+    </h4> 
+  </div><!-- end map layers row-->
+</div>
+
+<!--#######################################################################################################
+                                    TAB SET UP
+    ######################################################################################################-->
+<div class="container">
+    <!--#######################################################################################################
+                                    MAP DIV
+    ######################################################################################################-->
+    <div class="col-sm-9" style="padding:0px">
+     <div class="map-layers-row" id = "map-column" style="z-index: 1px;">
+           <div id="map" style="height: 500px; z-index: 10;"> <!--border: thin solid black;"--> 
+            <div id="menu" style="z-index: 25;">
+              <p style="font-size: 16px; display: inline"><strong>Select Base Map:&emsp;</strong></p>
+              <input id="satellite-v9" type="radio" name="rtoggle" value="satellite">
+              <!-- See a list of Mapbox-hosted public styles at -->
+              <!-- https://docs.mapbox.com/api/maps/styles/#mapbox-styles -->
+              <label for="satellite-v9">satellite</label>
+              <input id="light-v10" type="radio" name="rtoggle" value="light"  checked="checked">
+              <label for="light-v10">light</label>
+              <input id="dark-v10" type="radio" name="rtoggle" value="dark">
+              <label for="dark-v10">dark</label>
+              <input id="streets-v11" type="radio" name="rtoggle" value="streets">
+              <label for="streets-v11">streets</label>
+              <input id="outdoors-v11" type="radio" name="rtoggle" value="outdoors">
+              <label for="outdoors-v11">outdoors</label>
+        
+            </div>
+           <!--div class="infoMap" id="map_hover_box"><p><strong>Hover over layers</strong></p></div-->
+           <div class="legend" id="stream-legend" style="display: none;"></div>    
+           <div class="legend" id="huc12-legend" style="display: none;"></div>    
+         </div> <!--end map Div-->
+      </div><!--end map row div-->
+  </div> <!--co-sm-5 end Map section-->
+
+     
+<!--#######################################################################################################
+                                      FILTER CONTENT / RESULTS CONTENT
+  ######################################################################################################-->
+<div class = "col-sm-3">
+   <div class="row row-margin" style="margin-left: 8px; margin-top: 10px;">
+      <h3 style="color:rgb(26,131,130)">Make Selections</h3>
+      <section style="padding-left: 25px; margin-bottom: 20px;">
+        <!-- <span style="font-size: 18px; font-weight: bold;">Collection</span><br> -->
+        <input type="checkbox" class="check_row" name="setCollections" checked="checked" value="gages"> Reference Stream Gages <br>
+        <input type="checkbox" class="check_row" name="setCollections" value="mainstems"> Mainstem Rivers <br>
+        <input type="checkbox" class="check_row" name="setCollections" value="hu06"> River Basin (HUC6) <br>
+        <input type="checkbox" class="check_row" name="setCollections" value="hu08"> Sub-Basin (HUC8) <br>
+        <input type="checkbox" class="check_row" name="setCollections" value="hu10"> Watershed (HUC10) <br>
+        <input type="checkbox" class="check_row" name="setCollections" value="nat_aq"> National Aquifers <br>
+        <input type="checkbox" class="check_row" name="setCollections" value="counties"> Counties <br>
+        <input type="checkbox" class="check_row" name="setCollections" value="aiannh"> Native Lands <br>
+        <input type="checkbox" class="check_row" name="setCollections" value="cbsa"> Core-Based Statistical Areas <br>
+        <input type="checkbox" class="check_row" name="setCollections" value="ua10"> Urban Areas <br>
+        <input type="checkbox" class="check_row" name="setCollections" value="places"> Places <br>
+      </section>
+
+      <br><br>
+
+      <form name="selectZoomLevel"> <span style="font-size: 18px; font-weight: bold;">Zoom Threshold</span><br>
+        <select style="width: 250px;" name="setZoom" id="setZoom" onchange="setZoomThis(this);">
+          <option value="6"> 6 (several states) </option>          
+          <option value="7"> 7 (1 or 2 states) </option>
+          <option value="8"> 8 - (~ half a state) </option>
+          <option selected="selected" value="9"> 9 (~10 to 40 counties) </option>
+          <option value="10"> 10 (~6 to 15 counties) </option>         
+          <option value="11"> 11 (~2 to 10 counties) </option> 
+          <option value="12"> 12 (~1 to 3 counties) </option>
+        </select>
+      </form>
+      <br><br><br>
+      <section style="margin: 10px 25px 5px 25px;">
+        <button type="button" style="width: 200px;" class="btn btn-dark btn-lg" value="findData" id="findData" onclick="zoomCheck()">Find Data</button>
+      </section>
+      <section style="margin: 5px 25px 5px 25px;">
+        <button type="button" style="width: 200px;" class="btn btn-warning btn-lg" value="sortLayers" id="sortLayers" onclick="sortMapLayers()">Sort Map Layers<br>(may try several times)</button>
+      </section>
+    </div><!--end filter row-->
+  </div><!--end div col-sm-3-->
+</div><!--end map row-->
+
+
+<div class="container" style="margin: 15px 10px;">
+  <div class="col-sm-9">
+    <h4>Data displayed above</h4>
+    <table id="dataTable"></table>
+  </div>
+  <div class="col-sm-3">
+    <p id="current_zoom_text" style="font-size: 16px;">Current Zoom Level: 3.25</p>
+
+  </div>
+</div><!--End Div row results-->
+
+
+
+
+<script type="application/javascript">
+  //###########################################################################
+  //                        SET UP GLOBAL VARIABLES
+  //##############################################################################################
+ var zoomThreshold = 9;
+ var streamLegend = document.getElementById('stream-legend');
+ var hucLegend = document.getElementById('huc12-legend');
+ var basemaps = "light-v10";
+ var currentZoom = 3;
+ var bound_box = "-97,35,-94,37"
+ 
+ 
+//set up url pieces
+var main_url = "https://reference.geoconnex.us/collections/";
+var objects_url = "/items?f=json&lang=en-US&bbox=";
+var limit_url = "&limit=1000"
+
+var collectionsList = ["gages"];
+map_layers_list = ["gages", "mainstems", "hu06", "hu08", "hu10", "nat_aq", "counties", "cbsa", "ua10", "places", "aiannh"]
+
+ // Create a popup, but don't add it to the map yet.
+ var popup = new mapboxgl.Popup({
+    closeButton: false,
+    closeOnClick: false
+  });
+ 
+  /* SET UP THE MAP */
+  mapboxgl.accessToken = 'pk.eyJ1IjoiaW50ZXJuZXRvZndhdGVyIiwiYSI6ImNrdHZuZXRrazJjMnMycHAzdW91bnAyNjgifQ.KeB-tlVDJgW7H_NGdCghNg';
+  var map = new mapboxgl.Map({
+    container: 'map', //specify container ID
+    style: 'mapbox://styles/mapbox/' + basemaps,   //light-v10', //streets-v11', //specify map style
+    center: [-97.5, 38.5], //specify the start position; long, lat
+    zoom: currentZoom
+  });
+  map.addControl(new mapboxgl.NavigationControl(), 'top-left');
+
+  //toggle layers
+  const layerList = document.getElementById('menu');
+  const inputs = layerList.getElementsByTagName('input');
+  for (const input of inputs) {
+    input.onclick = (layer) => {
+    const layerId = layer.target.id;
+  map.setStyle('mapbox://styles/mapbox/' + layerId);
+  };
+
+//map zoom
+  map.on('zoom', () => {
+    currentZoom = map.getZoom();
+    var bounds = map.getBounds();
+    bound_box = Math.round(bounds._sw.lng*100)/100 + "," + Math.round(bounds._sw.lat*100)/100 + "," + Math.round(bounds._ne.lng*100/100) + "," + Math.round(bounds._ne.lat*100)/100
+    document.getElementById('current_zoom_text').innerHTML=""
+
+    if(currentZoom < zoomThreshold){
+      document.getElementById('current_zoom_text').innerHTML = "Current zoom: " + Math.round(currentZoom*10)/10 + ".<br><span style='color: rgb(252,67,57)'>Zoom in closer to find data or change zoom threshold.</span><br>Bounding Box: W " + Math.round(bounds._ne.lng*10)/10 + ", N " + Math.round(bounds._ne.lat*10)/10 + ", E " + Math.round(bounds._sw.lng*10)/10 + ", S " + Math.round(bounds._sw.lat*10)/10
+    }
+
+    if(currentZoom >= zoomThreshold){
+      document.getElementById('current_zoom_text').innerHTML = "Current zoom: " + Math.round(currentZoom) + ".<br>You are zoomed in enough to find data. Click the 'Find Data' button.<br>Bounding Box: W " + Math.round(bounds._ne.lng*10)/10 + ", N " + Math.round(bounds._ne.lat*10)/10 + ", E " + Math.round(bounds._sw.lng*10)/10 + ", S " + Math.round(bounds._sw.lat*10)/10
+
+      //call function to find data based on selected collections
+    }
+
+    return {currentZoom, bound_box};
+  });
+
+}
+
+  
+</script>
+
+<script type="application/javascript" src="scripts/drawMap.js"></script>
+<script type="application/javascript" src="scripts/map_hover_click.js"></script>
+<script type="application/javascript" src="scripts/selectFunctions.js"></script>
+<script type="application/javascript" src="scripts/hucLegend.js"></script>
+</body>
+    
+</html>
+
+
+
